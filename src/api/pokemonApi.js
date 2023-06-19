@@ -42,15 +42,27 @@ export async function getPokemon(page) {
 
 }
 export async function getDetailPokemon(name) {
-  return axios.get(`${API_BASE_URL}/pokemon/${name}`)
+  let details = {}
+  await axios.get(`${API_BASE_URL}/pokemon/${name}`)
     .then(res => {
 
-      return res.data
+      details = { ...res.data }
     })
     .catch(error => {
       console.log('Error:', error);
       throw new Error('something went wrong');
     });
+
+  await axios.get(`${API_BASE_URL}/pokemon-species/${name}`)
+    .then(res => {
+
+      details = { ...details, ...res.data }
+    })
+    .catch(error => {
+      console.log('Error:', error);
+      throw new Error('something went wrong');
+    });
+  return details
 
 
 }

@@ -43,7 +43,7 @@ function DetailsPage() {
         }
         bookmarks.setbookmarks(temp)
     };
-    console.log('bookmarks', bookmarks)
+    console.log('pokemon', pokemon)
     const getBookmark = () => {
         const index = bookmarks.bookmarks.findIndex(e => pokemon.name == e.name);
         console.log('bookmarks, pokemon , index', bookmarks, pokemon, index)
@@ -73,18 +73,42 @@ function DetailsPage() {
 
         <div className=''>
             <h1>Pokemon Details</h1>
-            <img
-                className='w-1/3'
-                src={pokemon.sprites.front_default}
-                alt=""
-
-            />
-            <h2>Pokemon ID: {pokemonId}</h2>
-            <h3>Other details...</h3>
             <BookmarkIcon
                 isBookmarked={isBookmarked}
                 onClick={handleBookmarkClick}
             />
+            <div className='flex flex-wrap'>
+
+                <img
+                    className='w-1/3'
+                    src={pokemon.sprites.front_default}
+                    alt=""
+
+                />
+                <img
+                    className='w-1/3'
+                    src={pokemon.sprites.back_default}
+                    alt=""
+
+                />
+            </div>
+            <h2>Pokemon name: {pokemonId}</h2>
+            <h2>Pokemon color: {pokemon.color?.name}</h2>
+            <h2>Pokemon Groups: </h2>
+            {
+                pokemon.egg_groups?.map((item) =>
+                    <p
+                        key={item.name}
+                        className='ml-4'
+                    >{item.name}</p>
+                )
+            }
+            <h2>Pokemon generation: {pokemon.generation?.name}</h2>
+            <h2>Pokemon growth rate: {pokemon.growth_rate?.name}</h2>
+            <h2>Pokemon habitat : {pokemon.habitat?.name}</h2>
+            <h2>Pokemon weight : {pokemon.weight} hectograms</h2>
+            <h2>Pokemon height : {pokemon.height} hectograms</h2>
+
         </div>
     );
 }

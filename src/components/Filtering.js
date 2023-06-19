@@ -219,7 +219,7 @@ function Filtering({
             </div>
 
             <div
-                className=' flex flex-wrap justify-between'
+                className='border flex flex-wrap justify-between'
             >
                 <select
                     name=""
