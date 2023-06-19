@@ -101,7 +101,7 @@ function SearchPage() {
                     type="text"
                     id="search-input"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
                 />
                 <button
                     onClick={handleSearch}
@@ -116,16 +116,17 @@ function SearchPage() {
 
                     <div className="movie-grid">
                         {pokemonList.map((pokemon, i) => (
-
-                            <Link
-                                key={pokemon.name}
-                                to={`/details/${pokemon.name}`}
-                                className="movie-card">
-                                <img
-                                    src={pokemon.url}
-                                    alt={pokemon.name} />
+                            <div>
+                                <Link
+                                    key={pokemon.name}
+                                    to={`/details/${pokemon.name}`}
+                                    className="movie-card">
+                                    <img
+                                        src={pokemon.url}
+                                        alt={pokemon.name} />
+                                </Link>
                                 <p>{pokemon.name}</p>
-                            </Link>
+                            </div>
                         ))}
                     </div>
             }

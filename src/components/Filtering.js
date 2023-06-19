@@ -185,7 +185,7 @@ function Filtering({
     }, [])
     return (
         <div>
-            <label htmlFor='abilities'>abilities</label>
+            <h1 htmlFor='abilities'>abilities</h1>
             <div
                 name="abilities"
                 id="abilities"
@@ -310,7 +310,7 @@ function Filtering({
                 <button
                     className='border py-2 px-4 bg-blue-400 text-white'
                     onClick={loadPokemonList}
-                >Apply</button>
+                >Apply Filter</button>
             </div>
         </div>
     )
