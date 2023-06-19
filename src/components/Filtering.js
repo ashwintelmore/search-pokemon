@@ -1,44 +1,135 @@
 import React, { useEffect, useState } from 'react'
-import { getAbility, getPokemonAbilityByName } from '../api/pokemonApi';
+import { getAbility, getColors, getGenders, getGroups, getHabits, getPokemonAbilityByName, getPokemonFiltering, getTypes } from '../api/pokemonApi';
 import LoadingSpinner from './LoadingSpinner';
 import Error from './Error';
+import { hasNonEmptyField, isEmptyField } from './helper';
 
 function Filtering({
-    selectedAbility,
-    setSelectedAbility,
+    selectedabilities,
+    setSelectedabilities,
     setPokemonList,
     loading,
     setLoading,
     setPagePok,
+
+    isFillter,
+    setIsFillter,
+    error,
+    setError
 }) {
-    const [ability, setAbility] = useState([])
-    const [error, setError] = useState('');
+    const [abilities, setAbilities] = useState([])
+    const [ability, setAbility] = useState('')
+
+    const [genders, setGenders] = useState([])
+    const [gender, setGender] = useState('')
+
+    const [types, setTypes] = useState([])
+    const [type, setType] = useState('')
+
+    const [groups, setGroups] = useState([])
+    const [group, setGroup] = useState('')
+
+    const [colors, setColors] = useState([])
+    const [color, setColor] = useState('')
+
+    const [habits, setHabits] = useState([])
+    const [habit, setHabit] = useState('')
+
+    const [pokemons, setPokemons] = useState([])
+
+
+
+    // const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(0);
     // const [loading, setLoading] = useState({
     //     search: false,
     //     pagination: false,
     // })
-    const loadAbilityList = async () => {
+    const loadabilitiesList = async () => {
         setIsLoading(true);
         setError('');
         try {
             const response = await getAbility(page);
             setPage(pr => pr + 10)
-            setAbility(pr => [...pr, ...response])
+            setAbilities(pr => [...pr, ...response])
         } catch (error) {
             setError(error.message);
             console.log('error', error)
         }
         setIsLoading(false);
     };
-    const loadPokemonAbility = async () => {
+
+    const loadgenderList = async () => {
+        setIsLoading(true);
+        setError('');
+        try {
+            const response = await getGenders();
+            setGenders(response)
+        } catch (error) {
+            setError(error.message);
+            console.log('error', error)
+        }
+        setIsLoading(false);
+    };
+    const loadGroupList = async () => {
+        setIsLoading(true);
+        setError('');
+        try {
+            const response = await getGroups();
+            setGroups(response)
+        } catch (error) {
+            setError(error.message);
+            console.log('error', error)
+        }
+        setIsLoading(false);
+    };
+
+    const loadTypeList = async () => {
+        setIsLoading(true);
+        setError('');
+        try {
+            const response = await getTypes();
+            setTypes(response)
+        } catch (error) {
+            setError(error.message);
+            console.log('error', error)
+        }
+        setIsLoading(false);
+    };
+
+    const loadHabitList = async () => {
+        setIsLoading(true);
+        setError('');
+        try {
+            const response = await getHabits();
+            setHabits(response)
+        } catch (error) {
+            setError(error.message);
+            console.log('error', error)
+        }
+        setIsLoading(false);
+    };
+    const loadColorList = async () => {
+        setIsLoading(true);
+        setError('');
+        try {
+            const response = await getColors();
+            setColors(response)
+        } catch (error) {
+            setError(error.message);
+            console.log('error', error)
+        }
+        setIsLoading(false);
+    };
+
+    const loadPokemonabilities = async () => {
         setLoading({ ...loading, search: true })
         setError('');
         try {
-            const response = await getPokemonAbilityByName(selectedAbility);
+            const response = await getPokemonAbilityByName(selectedabilities);
             setPokemonList(response)
-            console.log('response', response)
+
         } catch (error) {
             setError(error.message);
             console.log('error', error)
@@ -46,40 +137,70 @@ function Filtering({
         setLoading({ ...loading, search: false })
     };
 
-    useEffect(() => {
-        if (selectedAbility) {
-            loadPokemonAbility();
-        } else
-            setPagePok(0)
-    }, [selectedAbility]);
+    const loadPokemonList = async () => {
+        setIsFillter(true)
+        console.log('ability, group, type, gender, habit, color', ability, group, type, gender, habit, color)
+        if (!hasNonEmptyField(ability, group, type, gender, habit, color)) {
+            setError('Chose any filter option');
+            setPokemonList([])
+
+            return
+        }
+
+        setLoading({ ...loading, search: true })
+        setError('');
+        try {
+            const response = await getPokemonFiltering({ ability, group, type, gender, habit, color });
+            setPokemonList(response)
+        } catch (error) {
+            setPokemonList([])
+            setError(error.message);
+            console.log('error', error)
+
+        }
+        setLoading({ ...loading, search: false })
+    };
+
+
+
+
+    // useEffect(() => {
+    //     if (selectedabilities) {
+    //         loadPokemonabilities();
+    //     } else
+    //         setPagePok(0)
+    // }, [selectedabilities]);
 
     //load list od abilities
     useEffect(() => {
-        loadAbilityList()
+        loadabilitiesList()
+        loadgenderList()
+        loadGroupList()
+        loadTypeList()
+        loadColorList()
+        loadHabitList()
         return () => {
-            setAbility([])
+            setAbilities([])
         }
     }, [])
-
     return (
         <div>
-            <h2>Ability</h2>
-
-            <div name="" id="" className='border flex flex-wrap'>
+            <label htmlFor='abilities'>abilities</label>
+            <div name="abilities" id="abilities" className='border flex flex-wrap'>
                 {
-                    ability.map((item, i) => {
-                        if (item.name == selectedAbility?.name)
+                    abilities.map((item, i) => {
+                        if (item.name == ability)
                             return <p
                                 value=""
                                 className='border inline m-2 p-2 cursor-pointer bg-blue-500 text-white'
                                 key={item.name}
-                                onClick={() => setSelectedAbility(null)}
+                                onClick={() => setAbility(null)}
                             >{item.name}</p>
                         return <p
                             value=""
                             className='border inline m-2 p-2 cursor-pointer'
                             key={item.name}
-                            onClick={() => setSelectedAbility(item)}
+                            onClick={() => setAbility(item.name)}
                         >{item.name}</p>
                     })
                 }
@@ -89,11 +210,97 @@ function Filtering({
                     <p
                         value=""
                         className='border inline m-2 p-2 cursor-pointer'
-                        onClick={loadAbilityList}
+                        onClick={loadabilitiesList}
                     >Load more</p>
                 }
             </div>
-            {error && <Error message={error} />}
+
+            <div>
+                <select
+                    name=""
+                    id="gender"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                >
+                    <option value={''}>Select Gender</option>
+                    {
+                        genders.map((item) => {
+                            return <option
+                                value={item.name}
+                                key={item.name}
+                            >{item.name}</option>
+                        })
+                    }
+                </select>
+                <select
+                    name=""
+                    id="type"
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                >
+                    <option value={''}>Select type</option>
+                    {
+                        types.map((item) => {
+                            return <option
+                                value={item.name}
+                                key={item.name}
+                            >{item.name}</option>
+                        })
+                    }
+                </select>
+                <select
+                    name=""
+                    id="group"
+                    value={group}
+                    onChange={(e) => setGroup(e.target.value)}
+                >
+                    <option value={''}>Select group</option>
+                    {
+                        groups.map((item) => {
+                            return <option
+                                value={item.name}
+                                key={item.name}
+                            >{item.name}</option>
+                        })
+                    }
+                </select>
+                <select
+                    name=""
+                    id="color"
+                    value={color}
+                    onChange={(e) => setColor(e.target.value)}
+                >
+                    <option value={''}>Select color</option>
+                    {
+                        colors.map((item) => {
+                            return <option
+                                value={item.name}
+                                key={item.name}
+                            >{item.name}</option>
+                        })
+                    }
+                </select>
+                <select
+                    name=""
+                    id="habit"
+                    value={habit}
+                    onChange={(e) => setHabit(e.target.value)}
+                >
+                    <option value={''}>Select habit</option>
+                    {
+                        habits.map((item) => {
+                            return <option
+                                value={item.name}
+                                key={item.name}
+                            >{item.name}</option>
+                        })
+                    }
+                </select>
+
+                <button
+                    onClick={loadPokemonList}
+                >Apply</button>
+            </div>
         </div>
     )
 }

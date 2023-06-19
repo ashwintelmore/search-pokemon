@@ -11,6 +11,7 @@ function SearchPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [pokemonList, setPokemonList] = useState([]);
     const [page, setPage] = useState(0);
+    const [isFillter, setIsFillter] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
     const [loading, setLoading] = useState({
         search: false,
@@ -21,11 +22,10 @@ function SearchPage() {
 
     const handleSearch = async () => {
         setLoading({ ...loading, search: true })
+        setIsFillter(false)
         setError('');
         if (searchQuery == '') {
-            setSelectedAbility(null)
             setPage(0)
-            setPokemonList([])
             setLoading({ ...loading, search: false })
             return
         }
@@ -63,10 +63,13 @@ function SearchPage() {
     };
 
 
+
+    console.log('isFillter', isFillter)
+
     useEffect(() => {
         if (page == 0)
             setPokemonList([])
-        if (!selectedAbility)
+        if (!isFillter)
             loadPokemonList();
     }, [page]);
 
@@ -80,8 +83,7 @@ function SearchPage() {
     }, []);
 
     return (
-        <div className='mx-auto w-3/4'>
-            <h1 className='text-center text-5xl my-7 font-bold'>Pokemon Search</h1>
+        <div className=''>
             <Filtering
                 selectedAbility={selectedAbility}
                 setSelectedAbility={(value) => setSelectedAbility(value)}
@@ -89,6 +91,10 @@ function SearchPage() {
                 loading={loading}
                 setLoading={(value) => setLoading(value)}
                 setPagePok={(value) => setPage(value)}
+                error={error}
+                setError={(value) => setError(value)}
+                isFillter={error}
+                setIsFillter={(value) => setIsFillter(value)}
             />
             <div className="search-container my-3">
                 <input
