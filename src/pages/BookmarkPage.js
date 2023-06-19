@@ -34,7 +34,9 @@ function BookmarksPage() {
                                 <p>{pokemon.name}</p>
                                 <p
                                     onClick={() => handleBookmarkClick(pokemon)}
-                                >bookmark</p>
+                                >
+                                    <i class="fa-solid fa-bookmark"></i>
+                                </p>
                             </div>
                         ))}
                     </div>

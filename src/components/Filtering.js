@@ -186,7 +186,10 @@ function Filtering({
     return (
         <div>
             <label htmlFor='abilities'>abilities</label>
-            <div name="abilities" id="abilities" className='border flex flex-wrap'>
+            <div
+                name="abilities"
+                id="abilities"
+                className='border flex flex-wrap'>
                 {
                     abilities.map((item, i) => {
                         if (item.name == ability)
@@ -215,9 +218,12 @@ function Filtering({
                 }
             </div>
 
-            <div>
+            <div
+                className=' flex flex-wrap justify-between'
+            >
                 <select
                     name=""
+                    className='border p-2'
                     id="gender"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
@@ -236,6 +242,7 @@ function Filtering({
                     name=""
                     id="type"
                     value={type}
+                    className='border p-2'
                     onChange={(e) => setType(e.target.value)}
                 >
                     <option value={''}>Select type</option>
@@ -252,6 +259,7 @@ function Filtering({
                     name=""
                     id="group"
                     value={group}
+                    className='border p-2'
                     onChange={(e) => setGroup(e.target.value)}
                 >
                     <option value={''}>Select group</option>
@@ -267,6 +275,7 @@ function Filtering({
                 <select
                     name=""
                     id="color"
+                    className='border p-2'
                     value={color}
                     onChange={(e) => setColor(e.target.value)}
                 >
@@ -283,6 +292,7 @@ function Filtering({
                 <select
                     name=""
                     id="habit"
+                    className='border p-2'
                     value={habit}
                     onChange={(e) => setHabit(e.target.value)}
                 >
@@ -298,6 +308,7 @@ function Filtering({
                 </select>
 
                 <button
+                    className='border py-2 px-4 bg-blue-400 text-white'
                     onClick={loadPokemonList}
                 >Apply</button>
             </div>
